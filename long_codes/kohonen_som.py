@@ -1,9 +1,14 @@
+#!/usr/bin/env python3
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
 # Experiment 6: Unsupervised Learning - Kohonen Self-Organizing Feature Map with Graph
 # Source: AISC_exp6_C3_2024300198 (1).pdf
 # =====================================================================
 
+import os
+import matplotlib
+if not os.environ.get('DISPLAY') and not os.environ.get('WAYLAND_DISPLAY'):
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 def kohonen():

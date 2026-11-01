@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 2: Utility-Based Agent (Algorithmic Trading Bot)
 
 price = float(input("Enter current stock price (e.g. 150): "))

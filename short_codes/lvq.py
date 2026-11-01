@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 6: Learning Vector Quantization (LVQ)
 
 # Initial Reference Vectors and their Classes (from lab sheet)

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 6: Kohonen Self-Organizing Feature Map (KSOFM)
 
 # Initial Weight Matrix: 2 features x 5 cluster units (from lab sheet)

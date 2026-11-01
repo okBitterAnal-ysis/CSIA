@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+import os
+import matplotlib
+if not os.environ.get('DISPLAY') and not os.environ.get('WAYLAND_DISPLAY'):
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.datasets import fetch_openml
 from sklearn.linear_model import Perceptron

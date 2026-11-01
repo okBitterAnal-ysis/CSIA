@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
 # Experiment 10: Adaptive Neuro-Fuzzy Inference System (ANFIS) with Graph
@@ -6,6 +7,10 @@
 
 import math
 import numpy as np
+import os
+import matplotlib
+if not os.environ.get('DISPLAY') and not os.environ.get('WAYLAND_DISPLAY'):
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 def gaussian_membership(x, c, sigma):

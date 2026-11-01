@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
 # Experiment 5: Supervised Learning (Back Propagation Neural Network)
@@ -7,6 +8,10 @@
 
 import math
 import pandas as pd
+import os
+import matplotlib
+if not os.environ.get('DISPLAY') and not os.environ.get('WAYLAND_DISPLAY'):
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 alpha = 0.25

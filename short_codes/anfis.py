@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 10: Adaptive Neuro-Fuzzy Inference System (5-Layer ANFIS)
 import math
 

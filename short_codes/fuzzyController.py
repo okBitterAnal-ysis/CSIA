@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 9: Fuzzy Logic Controller (Mamdani Inference)
 import numpy as np
 import skfuzzy as fuzz

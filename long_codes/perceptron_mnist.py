@@ -1,9 +1,14 @@
+#!/usr/bin/env python3
 # =====================================================================
 # SARDAR PATEL INSTITUTE OF TECHNOLOGY
 # Experiment 4: Multiclass Perceptron for Handwritten Digit Classification
 # Source: EXP4_AISC_2024300198 (2) (1).pdf
 # =====================================================================
 
+import os
+import matplotlib
+if not os.environ.get('DISPLAY') and not os.environ.get('WAYLAND_DISPLAY'):
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.linear_model import Perceptron
 from sklearn.model_selection import train_test_split

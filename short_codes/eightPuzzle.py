@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 1: 8-Puzzle Problem (A* Search with Manhattan Distance)
 import heapq
 

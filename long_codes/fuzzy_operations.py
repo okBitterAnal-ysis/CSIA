@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
 # Experiment 8: Fuzzy Sets and Fuzzy Relations Operations with Graphs
@@ -5,6 +6,10 @@
 # =====================================================================
 
 import numpy as np
+import os
+import matplotlib
+if not os.environ.get('DISPLAY') and not os.environ.get('WAYLAND_DISPLAY'):
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 np.set_printoptions(formatter={'float': '{: 0.2f}'.format}, legacy='1.13')

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 7: Bidirectional Associative Memory (BAM) Network
 import numpy as np
 

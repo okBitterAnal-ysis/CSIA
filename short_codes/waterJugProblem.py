@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 1: Water Jug Problem (State-Space BFS Search)
 from collections import deque
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 7: Autoassociative Memory Network (Hebbian Learning)
 import numpy as np
 

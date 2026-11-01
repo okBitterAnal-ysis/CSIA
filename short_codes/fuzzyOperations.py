@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 8: Fuzzy Sets and Relations Operations
 import numpy as np
 

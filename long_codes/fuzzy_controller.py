@@ -1,9 +1,14 @@
+#!/usr/bin/env python3
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
 # Experiment 9: Fuzzy Logic Controller (Mamdani Inference System) with Graphs
 # =====================================================================
 
 import numpy as np
+import os
+import matplotlib
+if not os.environ.get('DISPLAY') and not os.environ.get('WAYLAND_DISPLAY'):
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl

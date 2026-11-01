@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 7: Associative Memory Networks (Autoassociative & BAM)
 import numpy as np
 

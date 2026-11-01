@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
 # Experiment 3: Design Half Adder using McCulloch-Pitts Neuron

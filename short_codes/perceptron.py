@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 4: Single Layer Perceptron (Bipolar Logic Gate Learning)
 
 alpha = float(input("Enter learning rate alpha (e.g. 1.0): "))

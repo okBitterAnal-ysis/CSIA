@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Experiment 3: Half Adder & Full Adder using McCulloch-Pitts Neuron
 
 def mp_neuron(inputs, weights, theta):

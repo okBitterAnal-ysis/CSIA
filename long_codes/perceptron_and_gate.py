@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # =====================================================================
 # SARDAR PATEL INSTITUTE OF TECHNOLOGY
 # Experiment 4: Single Layer Perceptron - AND Gate
@@ -7,6 +8,10 @@
 """Implement an AND gate with a single-layer perceptron."""
 
 import numpy as np
+import os
+import matplotlib
+if not os.environ.get('DISPLAY') and not os.environ.get('WAYLAND_DISPLAY'):
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 class Perceptron:

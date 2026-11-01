@@ -1,9 +1,14 @@
+#!/usr/bin/env python3
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
 # Experiment 2: PEAS, PAGE and Agent Design (Algorithmic Trading Bot)
 # Source: EXP2_AISC_dhirensacherr (1).pdf
 # =====================================================================
 
+import os
+import matplotlib
+if not os.environ.get('DISPLAY') and not os.environ.get('WAYLAND_DISPLAY'):
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 # ---------------------------------------------------------------------
