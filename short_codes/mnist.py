@@ -10,16 +10,25 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 def mnist_perceptron_sklearn():
-    print("Fetching MNIST dataset...")
-    X, y = fetch_openml(
-        'mnist_784', version=1,
-        return_X_y=True, as_frame=False
-    )
-    X = X / 255.0
+    print("Loading MNIST / Digits dataset...")
+    try:
+        X, y = fetch_openml(
+            'mnist_784', version=1,
+            return_X_y=True, as_frame=False, parser='liac-arff'
+        )
+        X = X / 255.0
+        train_sz = 60000
+    except Exception:
+        print("Using local digits dataset fallback...")
+        from sklearn.datasets import load_digits
+        digits = load_digits()
+        X, y = digits.data / 16.0, digits.target.astype(str)
+        train_sz = int(len(X) * 0.8)
+
     print("Dataset loaded!")
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, train_size=60000, shuffle=False
+        X, y, train_size=train_sz, shuffle=False
     )
 
     print("Training Perceptron model...")

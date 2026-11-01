@@ -7,7 +7,6 @@
 # =====================================================================
 
 import math
-import pandas as pd
 import os
 import matplotlib
 if not os.environ.get('DISPLAY') and not os.environ.get('WAYLAND_DISPLAY'):
@@ -124,7 +123,7 @@ for epoch in range(1, 11):
     epoch_errors.append(mean_error)
 
     all_epoch_tables.append({
-        "table": pd.DataFrame(epoch_rows),
+        "rows": epoch_rows,
         "mean_error": mean_error
     })
 
@@ -133,11 +132,17 @@ print("\n" + "=" * 90)
 print("EPOCH-WISE SUMMARY TABLES")
 print("=" * 90)
 
+headers = ["x1", "x2", "Target", "Z1", "Z2", "Yin", "Y", "Error", "dw1", "dw2", "dw0"]
+header_str = "  ".join(f"{h:>7}" for h in headers)
+
 for i, epoch_data in enumerate(all_epoch_tables, start=1):
-    print("\n" + "-" * 90)
+    print("\n" + "-" * len(header_str))
     print(f"EPOCH = {i}")
-    print("-" * 90)
-    print(epoch_data["table"].to_string(index=False))
+    print("-" * len(header_str))
+    print(header_str)
+    print("-" * len(header_str))
+    for row in epoch_data["rows"]:
+        print("  ".join(f"{row[h]:>7}" for h in headers))
     print(f"\nMean Error = {epoch_data['mean_error']:.4f}")
 
 # FINAL WEIGHTS AFTER 10 EPOCHS

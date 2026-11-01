@@ -1,45 +1,54 @@
 #!/usr/bin/env python3
 # Experiment 9: Fuzzy Logic Controller (Mamdani Inference)
-import numpy as np
-import skfuzzy as fuzz
-from skfuzzy import control as ctrl
 
-# 1. Define Universes of Discourse
-temp = ctrl.Antecedent(np.arange(0, 51, 1), 'temperature')
-humidity = ctrl.Antecedent(np.arange(0, 101, 1), 'humidity')
-fan = ctrl.Consequent(np.arange(0, 101, 1), 'fan_speed')
+def trimf(x, a, b, c):
+    """Triangular membership function without external dependencies."""
+    if x <= a or x >= c:
+        return 0.0
+    if a < x <= b:
+        return (x - a) / (b - a) if b != a else 1.0
+    return (c - x) / (c - b) if c != b else 1.0
 
-# 2. Membership Functions
-temp['Cold'] = fuzz.trimf(temp.universe, [0, 0, 20])
-temp['Medium'] = fuzz.trimf(temp.universe, [15, 25, 35])
-temp['Hot'] = fuzz.trimf(temp.universe, [30, 50, 50])
-
-humidity['Low'] = fuzz.trimf(humidity.universe, [0, 0, 50])
-humidity['High'] = fuzz.trimf(humidity.universe, [50, 100, 100])
-
-fan['Low'] = fuzz.trimf(fan.universe, [0, 0, 50])
-fan['Medium'] = fuzz.trimf(fan.universe, [25, 50, 75])
-fan['High'] = fuzz.trimf(fan.universe, [50, 100, 100])
-
-# 3. Fuzzy Rules
-r1 = ctrl.Rule(temp['Cold'], fan['Low'])
-r2 = ctrl.Rule(temp['Medium'] & humidity['Low'], fan['Medium'])
-r3 = ctrl.Rule(temp['Medium'] & humidity['High'], fan['High'])
-r4 = ctrl.Rule(temp['Hot'], fan['High'])
-
-# 4. Simulation Engine
-system = ctrl.ControlSystem([r1, r2, r3, r4])
-sim = ctrl.ControlSystemSimulation(system)
-
-# User Inputs
+# 1. Inputs
 t = float(input("Enter temperature in °C (0 to 50, e.g. 24): "))
 h = float(input("Enter humidity in % (0 to 100, e.g. 60): "))
 
-sim.input['temperature'] = t
-sim.input['humidity'] = h
-sim.compute()
+# 2. Fuzzification
+temp_cold = trimf(t, 0, 0, 20)
+temp_med = trimf(t, 15, 25, 35)
+temp_hot = trimf(t, 30, 50, 50)
 
-print(f"\n--- Fuzzy Controller Output ---")
+hum_low = trimf(h, 0, 0, 50)
+hum_high = trimf(h, 50, 100, 100)
+
+# 3. Fuzzy Rules (Mamdani Min-Max Inference)
+# Rule 1: IF Temp is Cold THEN Fan is Low
+# Rule 2: IF Temp is Medium AND Humidity is Low THEN Fan is Medium
+# Rule 3: IF Temp is Medium AND Humidity is High THEN Fan is High
+# Rule 4: IF Temp is Hot THEN Fan is High
+rule1 = temp_cold
+rule2 = min(temp_med, hum_low)
+rule3 = min(temp_med, hum_high)
+rule4 = temp_hot
+
+fan_low = rule1
+fan_med = rule2
+fan_high = max(rule3, rule4)
+
+# 4. Defuzzification (Centroid of Aggregated Output)
+num, den = 0.0, 0.0
+for speed in range(0, 101):
+    mu_low = min(fan_low, trimf(speed, 0, 0, 50))
+    mu_med = min(fan_med, trimf(speed, 25, 50, 75))
+    mu_high = min(fan_high, trimf(speed, 50, 100, 100))
+    mu = max(mu_low, mu_med, mu_high)
+    num += speed * mu
+    den += mu
+
+fan_speed = (num / den) if den != 0 else 50.0
+
+# 5. Output Result
+print("\n--- Fuzzy Controller Output ---")
 print(f"Temperature: {t} °C")
 print(f"Humidity   : {h} %")
-print(f"Fan Speed  : {sim.output['fan_speed']:.2f} %")
+print(f"Fan Speed  : {fan_speed:.2f} %")
