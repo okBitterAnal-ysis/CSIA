@@ -6,6 +6,9 @@
 
 """Implement an AND gate with a single-layer perceptron."""
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 class Perceptron:
     """A binary perceptron trained with the perceptron learning rule."""
 
@@ -111,6 +114,53 @@ def main():
     print(f"Final predictions: {predictions}\n")
 
     assert predictions == targets
+
+    # Graph Generation & Printing
+    print("Generating Perceptron Decision Boundary Plot for AND Gate...")
+    plt.figure(figsize=(7, 6))
+
+    # Grid for decision region
+    xx, yy = np.meshgrid(np.linspace(-0.5, 1.5, 200), np.linspace(-0.5, 1.5, 200))
+    w1, w2 = perceptron.weights
+    b = perceptron.bias
+    Z = (w1 * xx + w2 * yy + b >= 0).astype(int)
+
+    plt.contourf(xx, yy, Z, alpha=0.25, levels=[-0.5, 0.5, 1.5], colors=['#ff9999', '#99ff99'])
+
+    # Decision line: w1*x1 + w2*x2 + b = 0 => x2 = -(w1*x1 + b) / w2
+    x_line = np.linspace(-0.5, 1.5, 100)
+    if abs(w2) > 1e-5:
+        y_line = -(w1 * x_line + b) / w2
+        plt.plot(x_line, y_line, 'k--', linewidth=2, label=f'Decision Boundary: {w1:.1f}x1 + {w2:.1f}x2 + {b:.1f} = 0')
+
+    # Scatter data points
+    for (x1, x2), target in zip(inputs, targets):
+        if target == 1:
+            plt.scatter(x1, x2, color='green', s=150, edgecolors='black', linewidth=2, label='Class 1 (True)' if (x1, x2) == (1, 1) else "")
+            plt.text(x1 + 0.05, x2, f'({x1},{x2}) -> 1', fontsize=11, fontweight='bold', color='darkgreen')
+        else:
+            plt.scatter(x1, x2, color='red', s=150, edgecolors='black', linewidth=2, label='Class 0 (False)' if (x1, x2) == (0, 0) else "")
+            plt.text(x1 + 0.05, x2, f'({x1},{x2}) -> 0', fontsize=11, fontweight='bold', color='darkred')
+
+    plt.title('Perceptron Decision Boundary - AND Gate', fontsize=14, fontweight='bold')
+    plt.xlabel('Input $x_1$', fontsize=12)
+    plt.ylabel('Input $x_2$', fontsize=12)
+    plt.xlim(-0.3, 1.4)
+    plt.ylim(-0.3, 1.4)
+    plt.grid(True, linestyle=':', alpha=0.6)
+    plt.legend(loc='lower left')
+
+    plot_file = 'perceptron_and_gate_plot.png'
+    try:
+        plt.savefig(plot_file, dpi=300, bbox_inches='tight')
+        print(f"[Graph Printed] Plot successfully saved to '{plot_file}'")
+    except Exception:
+        pass
+
+    try:
+        plt.show()
+    except Exception:
+        pass
 
 if __name__ == "__main__":
     main()

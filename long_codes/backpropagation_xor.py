@@ -1,12 +1,13 @@
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
 # Experiment 5: Supervised Learning (Back Propagation Neural Network)
-# Program 1: 10-Epoch XOR Training with Epoch-Wise Summary Tables
+# Program 1: 10-Epoch XOR Training with Epoch-Wise Summary Tables & Graph
 # Source: AISC_EXP5_2024300198 (2).pdf
 # =====================================================================
 
 import math
 import pandas as pd
+import matplotlib.pyplot as plt
 
 alpha = 0.25
 
@@ -38,6 +39,7 @@ def sigmoid(x):
 
 # Store table + mean error for every epoch
 all_epoch_tables = []
+epoch_errors = []
 
 # RUN BACKPROPAGATION FOR 10 EPOCHS
 for epoch in range(1, 11):
@@ -70,7 +72,6 @@ for epoch in range(1, 11):
         dw0 = alpha * delta_out
 
         # 6. HIDDEN LAYER ERROR SIGNALS
-        # Use old w1 and w2 before updating them
         delta_in1 = delta_out * w1
         delta_in2 = delta_out * w2
 
@@ -78,12 +79,10 @@ for epoch in range(1, 11):
         delta2 = delta_in2 * z2 * (1 - z2)
 
         # 7. CHANGE IN INPUT -> HIDDEN WEIGHTS
-        # Weights connected to Z1
         dv11 = alpha * delta1 * x1
         dv21 = alpha * delta1 * x2
         dv01 = alpha * delta1
 
-        # Weights connected to Z2
         dv12 = alpha * delta2 * x1
         dv22 = alpha * delta2 * x2
         dv02 = alpha * delta2
@@ -104,7 +103,6 @@ for epoch in range(1, 11):
         })
 
         # 8. UPDATE ALL WEIGHTS
-        # Input -> Hidden Layer
         v11 = v11 + dv11
         v21 = v21 + dv21
         v01 = v01 + dv01
@@ -113,15 +111,13 @@ for epoch in range(1, 11):
         v22 = v22 + dv22
         v02 = v02 + dv02
 
-        # Hidden -> Output Layer
         w1 = w1 + dw1
         w2 = w2 + dw2
         w0 = w0 + dw0
 
-    # Calculate mean error after one complete epoch
     mean_error = total_error / len(training_data)
+    epoch_errors.append(mean_error)
 
-    # Store table and mean error
     all_epoch_tables.append({
         "table": pd.DataFrame(epoch_rows),
         "mean_error": mean_error
@@ -136,34 +132,43 @@ for i, epoch_data in enumerate(all_epoch_tables, start=1):
     print("\n" + "-" * 90)
     print(f"EPOCH = {i}")
     print("-" * 90)
-
-    # Print table
     print(epoch_data["table"].to_string(index=False))
-
-    # Print mean error
     print(f"\nMean Error = {epoch_data['mean_error']:.4f}")
 
 # FINAL WEIGHTS AFTER 10 EPOCHS
 print("\n" + "=" * 60)
 print("FINAL WEIGHTS AFTER 10 EPOCHS")
 print("=" * 60)
-
 print("\nInput -> Hidden Layer:")
-print(f"v11 = {v11:.4f}")
-print(f"v21 = {v21:.4f}")
-print(f"v01 = {v01:.4f}")
-
-print(f"v12 = {v12:.4f}")
-print(f"v22 = {v22:.4f}")
-print(f"v02 = {v02:.4f}")
+print(f"v11 = {v11:.4f}, v21 = {v21:.4f}, v01 = {v01:.4f}")
+print(f"v12 = {v12:.4f}, v22 = {v22:.4f}, v02 = {v02:.4f}")
 
 print("\nHidden -> Output Layer:")
-print(f"w1  = {w1:.4f}")
-print(f"w2  = {w2:.4f}")
-print(f"w0  = {w0:.4f}")
+print(f"w1  = {w1:.4f}, w2  = {w2:.4f}, w0  = {w0:.4f}")
 
-# TRAINING COMPLETED
 print("\n" + "=" * 60)
-print("TRAINING COMPLETED")
-print("Total Epochs = 10")
+print("TRAINING COMPLETED: Total Epochs = 10")
 print("=" * 60)
+
+# GRAPH GENERATION & PRINTING
+print("\nGenerating and displaying Mean Error vs Epoch graph...")
+fig, ax = plt.subplots(figsize=(8, 5))
+epochs_range = list(range(1, 11))
+ax.plot(epochs_range, epoch_errors, marker='o', color='darkblue', linewidth=2, markersize=6)
+ax.set_title('Backpropagation Neural Network - Mean Error vs Epoch (10 Epochs)', fontsize=13)
+ax.set_xlabel('Epoch', fontsize=11)
+ax.set_ylabel('Mean Squared Error', fontsize=11)
+ax.set_xticks(epochs_range)
+ax.grid(True, linestyle='--', alpha=0.6)
+
+plot_file = 'backpropagation_xor_error_plot.png'
+try:
+    plt.savefig(plot_file, dpi=300, bbox_inches='tight')
+    print(f"[Graph Printed] Plot successfully saved to '{plot_file}'")
+except Exception:
+    pass
+
+try:
+    plt.show()
+except Exception:
+    pass

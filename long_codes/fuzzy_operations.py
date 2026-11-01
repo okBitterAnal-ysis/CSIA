@@ -1,10 +1,12 @@
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
-# Experiment 8: Fuzzy Sets and Fuzzy Relations Operations
+# Experiment 8: Fuzzy Sets and Fuzzy Relations Operations with Graphs
 # Source: AISC_EXP8_dhirensacher_2024300198.pdf
 # =====================================================================
 
 import numpy as np
+import matplotlib.pyplot as plt
+
 np.set_printoptions(formatter={'float': '{: 0.2f}'.format}, legacy='1.13')
 
 # ---------------------------------------------------------------------
@@ -120,3 +122,43 @@ for i in range(R_rel.shape[0]):
 
 print("\nMax-Product Composition:")
 print(T_max_product)
+
+# ---------------------------------------------------------------------
+# Graph Generation & Printing
+# ---------------------------------------------------------------------
+print("\nGenerating and displaying Fuzzy Operations graphs...")
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+# Plot 1: Fuzzy Set Operations Curves
+ax1.plot(mach, A, 'o-', color='blue', label='Set A')
+ax1.plot(mach, B, 's-', color='green', label='Set B')
+ax1.plot(mach, union, '^--', color='red', label='Union (A ∪ B)')
+ax1.plot(mach, intersection, 'v--', color='purple', label='Intersection (A ∩ B)')
+ax1.set_title('Fuzzy Sets A, B, Union and Intersection')
+ax1.set_xlabel('Mach Universe')
+ax1.set_ylabel('Membership Grade')
+ax1.grid(True, linestyle='--', alpha=0.6)
+ax1.legend()
+
+# Plot 2: Heatmap of Max-Min Composition
+im = ax2.imshow(T_max_min, cmap='YlGnBu', vmin=0, vmax=1)
+ax2.set_title('Max-Min Composition (R ∘ S) Matrix')
+ax2.set_xlabel('Columns (Relation S)')
+ax2.set_ylabel('Rows (Relation R)')
+for i in range(T_max_min.shape[0]):
+    for j in range(T_max_min.shape[1]):
+        ax2.text(j, i, f'{T_max_min[i, j]:.2f}', ha='center', va='center', color='black', fontweight='bold')
+plt.colorbar(im, ax=ax2, label='Membership Grade')
+
+plt.tight_layout()
+plot_file = 'fuzzy_operations_plot.png'
+try:
+    plt.savefig(plot_file, dpi=300, bbox_inches='tight')
+    print(f"[Graph Printed] Plot successfully saved to '{plot_file}'")
+except Exception:
+    pass
+
+try:
+    plt.show()
+except Exception:
+    pass

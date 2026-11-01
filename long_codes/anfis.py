@@ -1,10 +1,12 @@
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
-# Experiment 10: Adaptive Neuro-Fuzzy Inference System (ANFIS)
+# Experiment 10: Adaptive Neuro-Fuzzy Inference System (ANFIS) with Graph
 # 5-Layer First-Order Sugeno Neuro-Fuzzy Architecture
 # =====================================================================
 
 import math
+import numpy as np
+import matplotlib.pyplot as plt
 
 def gaussian_membership(x, c, sigma):
     """Layer 1: Computes Gaussian membership grade for given center and spread."""
@@ -71,6 +73,48 @@ def run_anfis_simulation(x1, x2):
     print("\nLayer 5 (Overall Crisp System Output):")
     print(f"  Y = (w1_bar * f1) + (w2_bar * f2) = {final_output:.4f}")
     print("=" * 65)
+
+    # Graph Generation & Printing
+    print("\nGenerating and saving ANFIS Gaussian Membership Functions plot...")
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+    x_range = np.linspace(-1, 6, 200)
+
+    # Input 1 Memberships
+    gauss_A1 = np.exp(-((x_range - c_A1) ** 2) / (2 * (s_A1 ** 2)))
+    gauss_A2 = np.exp(-((x_range - c_A2) ** 2) / (2 * (s_A2 ** 2)))
+    ax1.plot(x_range, gauss_A1, 'b-', label='A1 (c=1, s=1)')
+    ax1.plot(x_range, gauss_A2, 'r-', label='A2 (c=3, s=1)')
+    ax1.axvline(x1, color='k', linestyle='--', label=f'Input x1 = {x1}')
+    ax1.set_title('ANFIS Feature x1 Gaussian Memberships')
+    ax1.set_xlabel('Feature x1')
+    ax1.set_ylabel('Membership Grade')
+    ax1.grid(True, linestyle='--', alpha=0.6)
+    ax1.legend()
+
+    # Input 2 Memberships
+    gauss_B1 = np.exp(-((x_range - c_B1) ** 2) / (2 * (s_B1 ** 2)))
+    gauss_B2 = np.exp(-((x_range - c_B2) ** 2) / (2 * (s_B2 ** 2)))
+    ax2.plot(x_range, gauss_B1, 'g-', label='B1 (c=2, s=1)')
+    ax2.plot(x_range, gauss_B2, 'm-', label='B2 (c=4, s=1)')
+    ax2.axvline(x2, color='k', linestyle='--', label=f'Input x2 = {x2}')
+    ax2.set_title('ANFIS Feature x2 Gaussian Memberships')
+    ax2.set_xlabel('Feature x2')
+    ax2.set_ylabel('Membership Grade')
+    ax2.grid(True, linestyle='--', alpha=0.6)
+    ax2.legend()
+
+    plot_file = 'anfis_architecture_plot.png'
+    try:
+        plt.savefig(plot_file, dpi=300, bbox_inches='tight')
+        print(f"[Graph Printed] Plot successfully saved to '{plot_file}'")
+    except Exception:
+        pass
+
+    try:
+        plt.show()
+    except Exception:
+        pass
 
     return final_output
 

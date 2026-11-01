@@ -1,9 +1,10 @@
 # =====================================================================
 # BHARATIYA VIDYA BHAVAN'S SARDAR PATEL INSTITUTE OF TECHNOLOGY
-# Experiment 9: Fuzzy Logic Controller (Mamdani Inference System)
+# Experiment 9: Fuzzy Logic Controller (Mamdani Inference System) with Graphs
 # =====================================================================
 
 import numpy as np
+import matplotlib.pyplot as plt
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
@@ -57,6 +58,56 @@ def run_fuzzy_air_conditioner(temperature_val, humidity_val):
     print("-" * 60)
     print(f"Computed Fan Speed: {output_fan_speed:.2f} %")
     print("=" * 60)
+
+    # 5. Graph Generation & Printing
+    print("\nGenerating and displaying Fuzzy Controller Membership & Output plots...")
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(9, 10))
+
+    # Plot Temperature
+    x_t = temperature.universe
+    ax1.plot(x_t, fuzz.trimf(x_t, [0, 0, 20]), 'b', label='Cold')
+    ax1.plot(x_t, fuzz.trimf(x_t, [15, 25, 35]), 'g', label='Medium')
+    ax1.plot(x_t, fuzz.trimf(x_t, [30, 50, 50]), 'r', label='Hot')
+    ax1.axvline(temperature_val, color='k', linestyle='--', label=f'Input: {temperature_val}°C')
+    ax1.set_title('Temperature Membership Functions')
+    ax1.set_ylabel('Membership')
+    ax1.legend()
+    ax1.grid(True, linestyle='--', alpha=0.5)
+
+    # Plot Humidity
+    x_h = humidity.universe
+    ax2.plot(x_h, fuzz.trimf(x_h, [0, 0, 50]), 'b', label='Low')
+    ax2.plot(x_h, fuzz.trimf(x_h, [50, 100, 100]), 'r', label='High')
+    ax2.axvline(humidity_val, color='k', linestyle='--', label=f'Input: {humidity_val}%')
+    ax2.set_title('Humidity Membership Functions')
+    ax2.set_ylabel('Membership')
+    ax2.legend()
+    ax2.grid(True, linestyle='--', alpha=0.5)
+
+    # Plot Fan Speed Output
+    x_f = fan_speed.universe
+    ax3.plot(x_f, fuzz.trimf(x_f, [0, 0, 50]), 'b', label='Low')
+    ax3.plot(x_f, fuzz.trimf(x_f, [25, 50, 75]), 'g', label='Medium')
+    ax3.plot(x_f, fuzz.trimf(x_f, [50, 100, 100]), 'r', label='High')
+    ax3.axvline(output_fan_speed, color='magenta', linewidth=2, linestyle='-', label=f'Crisp Output: {output_fan_speed:.1f}%')
+    ax3.set_title('Fan Speed Consequent & Defuzzified Output')
+    ax3.set_xlabel('Fan Speed (%)')
+    ax3.set_ylabel('Membership')
+    ax3.legend()
+    ax3.grid(True, linestyle='--', alpha=0.5)
+
+    plt.tight_layout()
+    plot_file = 'fuzzy_controller_plot.png'
+    try:
+        plt.savefig(plot_file, dpi=300, bbox_inches='tight')
+        print(f"[Graph Printed] Plot successfully saved to '{plot_file}'")
+    except Exception:
+        pass
+
+    try:
+        plt.show()
+    except Exception:
+        pass
 
     return output_fan_speed
 

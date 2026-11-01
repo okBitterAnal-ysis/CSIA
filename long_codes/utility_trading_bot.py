@@ -4,6 +4,8 @@
 # Source: EXP2_AISC_dhirensacherr (1).pdf
 # =====================================================================
 
+import matplotlib.pyplot as plt
+
 # ---------------------------------------------------------------------
 # 1. Simple Reflex Agent - Market Trend Signal Generator
 # ---------------------------------------------------------------------
@@ -155,6 +157,46 @@ def main():
     print(f"Available Capital     : Rs. {capital:,.2f}")
     print(f"Position Sizing       : Rs. {position_size:,.2f}")
     print("=" * 45)
+
+    # Graph Generation & Printing
+    print("\nGenerating Utility Agent Decision & Assessment Plot...")
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+
+    # Action Utilities Bar Chart
+    actions = list(utilities.keys())
+    values = list(utilities.values())
+    colors = ['#2ecc71' if a == action else '#3498db' for a in actions]
+    bars = ax1.bar(actions, values, color=colors, edgecolor='black', width=0.5)
+    ax1.set_title(f'Action Utilities (Recommended: {action})', fontsize=12, fontweight='bold')
+    ax1.set_ylabel('Utility Score', fontsize=11)
+    ax1.axhline(0, color='gray', linestyle='--', linewidth=0.8)
+    ax1.grid(axis='y', linestyle=':', alpha=0.7)
+    for bar in bars:
+        height = bar.get_height()
+        ax1.annotate(f'{height}',
+                     xy=(bar.get_x() + bar.get_width() / 2, height),
+                     xytext=(0, 3 if height >= 0 else -12),
+                     textcoords="offset points",
+                     ha='center', va='bottom', fontweight='bold')
+
+    # Weights Pie Chart
+    weight_labels = [f"Profit ({weights['profit']})", f"Risk ({weights['risk']})", f"Cost ({weights['cost']})"]
+    weight_vals = [weights['profit'], weights['risk'], weights['cost']]
+    ax2.pie(weight_vals, labels=weight_labels, autopct='%1.1f%%', colors=['#48dbfb', '#ff6b6b', '#feca57'], startangle=140)
+    ax2.set_title(f'Active Utility Weights ({market})', fontsize=12, fontweight='bold')
+
+    plt.tight_layout()
+    plot_file = 'utility_trading_bot_plot.png'
+    try:
+        plt.savefig(plot_file, dpi=300, bbox_inches='tight')
+        print(f"[Graph Printed] Plot successfully saved to '{plot_file}'")
+    except Exception:
+        pass
+
+    try:
+        plt.show()
+    except Exception:
+        pass
 
 if __name__ == "__main__":
     main()
